@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Inicio de Sesión</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+        body {
+            background: #76b852;
+            background: rgb(141,194,111);
+            background: linear-gradient(90deg, rgba(141,194,111,1) 0%, rgba(118,184,82,1) 50%);
+            font-family: "Roboto", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .pagina-login {
+            width: 360px;
+            padding: 8% 0 0;
+            margin: auto;
+        }
+
+        .formulario {
+            position: relative;
+            z-index: 1;
+            background: #FFFFFF;
+            max-width: 360px;
+            margin: 0 auto 100px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+        }
+
+        .formulario input {
+            font-family: "Roboto", sans-serif;
+            outline: 0;
+            background: #f2f2f2;
+            width: 100%;
+            border: 0;
+            margin: 0 0 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .formulario button {
+            font-family: "Roboto", sans-serif;
+            text-transform: uppercase;
+            outline: 0;
+            background: #4CAF50;
+            width: 100%;
+            border: 0;
+            padding: 15px;
+            color: #FFFFFF;
+            font-size: 14px;
+            -webkit-transition: all 0.3 ease;
+            transition: all 0.3 ease;
+            cursor: pointer;
+        }
+
+        .formulario button:hover,
+        .formulario button:active,
+        .formulario button:focus {
+            background: #43A047;
+        }
+
+        .formulario .mensaje {
+            margin: 15px 0 0;
+            color: #b3b3b3;
+            font-size: 12px;
+        }
+
+        .formulario .mensaje a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .formulario .formulario-registro {
+            display: none;
+        }
+
+        .contenedor {
+            position: relative;
+            z-index: 1;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .contenedor:before,
+        .contenedor:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .contenedor .info {
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .contenedor .info h1 {
+            margin: 0 0 15px;
+            padding: 0;
+            font-size: 36px;
+            font-weight: 300;
+            color: #1a1a1a;
+        }
+
+        .contenedor .info span {
+            color: #4d4d4d;
+            font-size: 12px;
+        }
+
+        .contenedor .info span a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .contenedor .info span .fa {
+            color: #EF3B3A;
+        }
+
+        .mensaje-error, .mensaje-exito {
+            color: red;
+            display: none;
+        }
+
+        .mensaje-exito {
+            color: green;
+        }
+
+        /* Estilo para el mensaje de referencia a la prevención de riesgo cardiovascular */
+        .mensaje-prevencion {
+            text-align: center;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="pagina-login">
+        <div class="mensaje-prevencion">
+            <h2>Bienvenido a la plataforma de Prevención de Riesgo Cardiovascular</h2>
+            <p>Por favor, inicia sesión o regístrate para acceder a las funcionalidades.</p>
+        </div>
+        <div class="formulario">
+            <form class="formulario-registro">
+                <input type="text" id="nombre" placeholder="Nombre" />
+                <input type="password" id="contraseña" placeholder="Contraseña" />
+                <input type="text" id="correo" placeholder="Correo electrónico" />
+                <button type="button" id="btn-registrar">Crear cuenta</button>
+                <p class="mensaje">¿Ya tienes una cuenta? <a href="#">Inicia sesión aquí</a></p>
+                <p class="mensaje-error" id="mensaje-error">Por favor, completa todos los campos correctamente.</p>
+                <p class="mensaje-exito" id="mensaje-exito">¡Registro exitoso!</p>
+            </form>
+            <form class="formulario-login">
+                <input type="text" id="usuario" placeholder="Usuario" />
+                <input type="password" id="contraseña-login" placeholder="Contraseña" />
+                <button type="button" id="btn-login">Iniciar sesión</button>
+                <p class="mensaje">¿No tienes cuenta? <a href="#">Crea una cuenta aquí</a></p>
+                <p class="mensaje-error" id="mensaje-error-login"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('.mensaje a').click(function() {
+            $('form').animate({ height: "toggle", opacity: "toggle" }, "slow");
+        });
+
+        // Validación para el botón de registro
+        document.getElementById('btn-registrar').addEventListener('click', function() {
+            const nombre = document.getElementById('nombre').value;
+            const contraseña = document.getElementById('contraseña').value;
+            const correo = document.getElementById('correo').value;
+            const mensajeError = document.getElementById('mensaje-error');
+            const mensajeExito = document.getElementById('mensaje-exito');
+
+            // Restablecer mensajes
+            mensajeError.style.display = 'none';
+            mensajeExito.style.display = 'none';
+
+            // Validar campos del formulario
+            if (!nombre || !contraseña || !correo) {
+                mensajeError.textContent = "Por favor, completa todos los campos.";
+                mensajeError.style.display = 'block';
+            } else if (!validarCorreo(correo)) {
+                mensajeError.textContent = "Por favor, introduce un correo válido.";
+                mensajeError.style.display = 'block';
+            } else {
+                mensajeExito.textContent = "¡Registro exitoso!";
+                mensajeExito.style.display = 'block';
+                // Aquí iría la lógica para guardar los datos o enviarlos al servidor
+            }
+        });
+
+        function validarCorreo(correo) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(correo).toLowerCase());
+        }
+
+        // Redirección al hacer clic en Iniciar sesión
+        document.getElementById('btn-login').addEventListener('click', function() {
+            const usuario = document.getElementById('usuario').value;
+            const contraseña = document.getElementById('contraseña-login').value;
+            const mensajeErrorLogin = document.getElementById('mensaje-error-login');
+
+            // Restablecer el mensaje de error
+            mensajeErrorLogin.style.display = 'none';
+
+            // Validación básica de campos
+            if (!usuario || !contraseña) {
+                mensajeErrorLogin.textContent = "Por favor, completa todos los campos.";
+                mensajeErrorLogin.style.display = 'block';
+            } else {
+                // Simulación de éxito en el inicio de sesión
+                window.location.href = "index.html"; // Redirige a index.html
+            }
+        });
+    </script>
+</body>
+</html>
